@@ -22,7 +22,6 @@ export default function SearchForm() {
     // In a real application, you would send the query to your backend
     // For now, we'll just simulate a search
     console.log("Searching for:", query);
-
     // Simulate search delay and then navigate to nodes page
     setTimeout(() => {
       setIsSearching(false);
