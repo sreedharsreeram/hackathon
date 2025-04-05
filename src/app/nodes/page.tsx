@@ -11,14 +11,26 @@ import ReactFlow, {
 import type { Node, Edge, NodeChange } from "reactflow";
 import "reactflow/dist/style.css";
 
-import { BaseNode } from "@/components/base-node";
-import QueryHistory from "@/components/query-history";
-import { Sidebar, SidebarContent, SidebarProvider, SidebarTrigger, SidebarHeader } from "@/components/ui/sidebar";
+import BaseNodeDemo from "@/components/base-node-demo";
+import { AuthProvider } from "@/components/auth-provider";
+import { CustomSidebar } from "@/components/custom-sidebar";
+import { 
+  Sidebar, 
+  SidebarInset,
+  SidebarProvider
+} from "@/components/ui/sidebar";
 import typedData from "@/data.json";
+
+// Define the Source interface
+interface Source {
+  title: string;
+  url: string;
+  content: string;
+}
 
 // Register custom node types
 const nodeTypes = {
-  base: BaseNode,
+  base: BaseNodeDemo,
 };
 
 // Function to create a node with the query and answer
@@ -28,7 +40,12 @@ const createNode = (query: string, answer: string): Node[] => {
       id: "1",
       type: "base",
       position: { x: 250, y: 100 },
-      data: { label: query, answer: answer },
+      data: { 
+        label: query, 
+        query: query,  
+        answer: answer,
+        sources: typedData.sources as Source[] 
+      },
     },
   ];
 };
@@ -66,37 +83,31 @@ export default function NodesPage() {
   };
 
   return (
-    <div className="flex h-screen w-full">
-      <SidebarProvider>
-        <Sidebar>
-          <SidebarHeader>
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Query Explorer</h2>
-              <SidebarTrigger />
-            </div>
-          </SidebarHeader>
-          <SidebarContent>
-            <QueryHistory 
+    <AuthProvider>
+      <div className="flex h-screen w-full">
+        <SidebarProvider defaultOpen={true}>
+          <Sidebar>
+            <CustomSidebar 
               currentQuery={query} 
               onQueryClick={handleQueryClick}
             />
-          </SidebarContent>
-        </Sidebar>
-        
-        <div className="flex-1 h-full">
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            nodeTypes={nodeTypes}
-            fitView
-          >
-            <Background />
-            <Controls />
-            <MiniMap />
-          </ReactFlow>
-        </div>
-      </SidebarProvider>
-    </div>
+          </Sidebar>
+          
+          <SidebarInset>
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
+              onNodesChange={onNodesChange}
+              nodeTypes={nodeTypes}
+              fitView
+            >
+              <Background />
+              <Controls />
+              <MiniMap />
+            </ReactFlow>
+          </SidebarInset>
+        </SidebarProvider>
+      </div>
+    </AuthProvider>
   );
 }
