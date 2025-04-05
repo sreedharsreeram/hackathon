@@ -1,5 +1,16 @@
 import { relations, sql } from "drizzle-orm";
-import { customType, index, pgTableCreator, primaryKey, serial, text, vector } from "drizzle-orm/pg-core";
+import { 
+  index, 
+  pgTableCreator, 
+  primaryKey, 
+  serial, 
+  text, 
+  vector, 
+  jsonb, 
+  timestamp, 
+  varchar,
+  boolean,
+} from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
 
 /**
@@ -10,18 +21,70 @@ import { type AdapterAccount } from "next-auth/adapters";
  */
 export const createTable = pgTableCreator((name) => `${name}`);
 
-export const guides = createTable(
-  'guides',
+// Projects table
+export const projects = createTable(
+  'projects',
   {
     id: serial('id').primaryKey(),
-    title: text('title').notNull(),
-    description: text('description').notNull(),
-    url: text('url').notNull(),
+    userId: varchar('user_id', { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    // Chat history as a JSONB array of question-answer pairs
+    chatHistory: jsonb('chat_history').$type<{
+      question: string;
+      answer: string;
+      timestamp: string;
+    }[]>().default([]).notNull(),
+    createdAt: timestamp('created_at', { mode: "date", withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp('updated_at', { mode: "date", withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  }
+);
+
+// Rename 'guides' to 'nodes' for clarity
+export const nodes = createTable(
+  'nodes',
+  {
+    id: serial('id').primaryKey(),
+    projectId: serial('project_id')
+      .notNull()
+      .references(() => projects.id),
+    userId: varchar('user_id', { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    answer: text('answer').notNull(),
+    images: jsonb('images').$type<{url: string; description: string}[]>().notNull(),
+    query: text('query').notNull(),
+    results: jsonb('results').$type<{title: string; url: string; content: string}[]>().default([]).notNull(),
+    createdAt: timestamp('created_at', { mode: "date", withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
     embedding: vector('embedding', { dimensions: 768 }),
   },
   (table) => [
-    index('embeddingIndex').using('hnsw', table.embedding.op('vector_cosine_ops')),
+    index('nodeEmbeddingIndex').using('hnsw', table.embedding.op('vector_cosine_ops')),
   ]
+);
+
+// Sources/Resources table that belongs to nodes
+export const sources = createTable(
+  'sources',
+  {
+    id: serial('id').primaryKey(),
+    nodeId: serial('node_id')
+      .notNull()
+      .references(() => nodes.id),
+    url: text('url').notNull(),
+    title: text('title').notNull(),
+    content: text('content').notNull(),
+    embedding: vector('embedding', { dimensions: 768 }),
+    createdAt: timestamp('created_at', { mode: "date", withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  }
 );
 
 export const users = createTable("user", (d) => ({
@@ -41,8 +104,26 @@ export const users = createTable("user", (d) => ({
   image: d.varchar({ length: 255 }),
 }));
 
+// Update relations
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
+  projects: many(projects),
+  nodes: many(nodes),
+}));
+
+export const projectsRelations = relations(projects, ({ one, many }) => ({
+  user: one(users, { fields: [projects.userId], references: [users.id] }),
+  nodes: many(nodes),
+}));
+
+export const nodesRelations = relations(nodes, ({ one, many }) => ({
+  project: one(projects, { fields: [nodes.projectId], references: [projects.id] }),
+  user: one(users, { fields: [nodes.userId], references: [users.id] }),
+  sources: many(sources),
+}));
+
+export const sourcesRelations = relations(sources, ({ one }) => ({
+  node: one(nodes, { fields: [sources.nodeId], references: [nodes.id] }),
 }));
 
 export const accounts = createTable(
