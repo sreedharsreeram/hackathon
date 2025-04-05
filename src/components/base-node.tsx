@@ -1,32 +1,46 @@
 "use client";
 
 import { memo } from "react";
+import type { ReactNode } from "react";
 import { Handle, Position } from "reactflow";
 import type { NodeProps } from "reactflow";
+
+interface Source {
+  title: string;
+  url: string;
+  content: string;
+}
 
 interface BaseNodeData {
   label: string;
   answer: string;
+  sources?: Source[];
 }
 
-export const BaseNode = memo(({ data }: NodeProps<BaseNodeData>) => {
+interface BaseNodeProps extends NodeProps<BaseNodeData> {
+  children?: ReactNode;
+}
+
+export const BaseNode = memo(({ data, children }: BaseNodeProps) => {
   return (
-    <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200 min-w-[400px] max-w-[600px]">
-      <Handle type="target" position={Position.Top} className="w-3 h-3" />
-      
+    <div className="max-w-[600px] min-w-[400px] rounded-lg border border-gray-200 bg-white p-4 shadow-lg">
+      <Handle type="target" position={Position.Top} className="h-3 w-3" />
+
       <div className="flex flex-col gap-4">
-        <div className="bg-blue-50 p-3 rounded-md">
-          <h3 className="text-lg font-semibold text-blue-700 mb-1">Query</h3>
-          <p className="text-gray-800">{data.label}</p>
+        <div className="rounded-md bg-blue-50 p-3">
+          <p className="text-black-700 mb-1 text-lg font-bold capitalize">
+            {data.label}
+          </p>
+        </div>
+
+        <div className="rounded-md bg-gray-50 p-3">
+          <p className="whitespace-pre-wrap text-gray-800">{data.answer}</p>
         </div>
         
-        <div className="bg-gray-50 p-3 rounded-md">
-          <h3 className="text-lg font-semibold text-gray-700 mb-1">Answer</h3>
-          <p className="text-gray-800 whitespace-pre-wrap">{data.answer}</p>
-        </div>
+        {children}
       </div>
-      
-      <Handle type="source" position={Position.Bottom} className="w-3 h-3" />
+
+      <Handle type="source" position={Position.Bottom} className="h-3 w-3" />
     </div>
   );
 });

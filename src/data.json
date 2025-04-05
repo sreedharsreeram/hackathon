@@ -56,5 +56,22 @@
     }
   ],
   "query": "What is Python?",
-  "answer": "Python is a high-level, interpreted, and object-oriented programming language known for its simplicity and readability. Created by Guido van Rossum and released in 1991, Python has become one of the most popular programming languages worldwide. It supports multiple programming paradigms, including structured, object-oriented, and functional programming. Python's design philosophy emphasizes code readability through the use of significant indentation. The language is widely used for web development, software development, data analysis, artificial intelligence, machine learning, and system scripting. Its extensive standard library, dynamic typing, and dynamic binding make it ideal for rapid application development and as a scripting language to connect existing components. Python's popularity stems from its increased productivity, fast development cycle, and robust debugging capabilities, making it a favorite among programmers for various applications."
+  "answer": "Python is a high-level, interpreted, and object-oriented programming language known for its simplicity and readability. Created by Guido van Rossum and released in 1991, Python has become one of the most popular programming languages worldwide. It supports multiple programming paradigms, including structured, object-oriented, and functional programming. Python's design philosophy emphasizes code readability through the use of significant indentation. The language is widely used for web development, software development, data analysis, artificial intelligence, machine learning, and system scripting. Its extensive standard library, dynamic typing, and dynamic binding make it ideal for rapid application development and as a scripting language to connect existing components. Python's popularity stems from its increased productivity, fast development cycle, and robust debugging capabilities, making it a favorite among programmers for various applications.",
+  "sources": [
+    {
+      "title": "Python.org",
+      "url": "https://www.python.org/about/",
+      "content": "Python is a programming language that lets you work quickly and integrate systems more effectively."
+    },
+    {
+      "title": "Wikipedia - Python",
+      "url": "https://en.wikipedia.org/wiki/Python_(programming_language)",
+      "content": "Python is an interpreted, high-level, general-purpose programming language. Created by Guido van Rossum and first released in 1991, Python's design philosophy emphasizes code readability with its notable use of significant whitespace."
+    },
+    {
+      "title": "Real Python",
+      "url": "https://realpython.com/python-introduction/",
+      "content": "Python is a versatile language that's popular for web development, data analysis, artificial intelligence, scientific computing, and more."
+    }
+  ]
 }

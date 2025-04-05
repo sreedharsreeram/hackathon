@@ -2,36 +2,49 @@
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, Paperclip } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { useRouter } from "next/navigation";
 
 export default function SearchForm() {
   const [query, setQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
-  const router = useRouter();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
-    if (!query.trim()) return;
-
+    
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) return;
+    
+    console.log("Submitting search for:", trimmedQuery);
     setIsSearching(true);
-
-    // In a real application, you would send the query to your backend
-    // For now, we'll just simulate a search
-    console.log("Searching for:", query);
-    // Simulate search delay and then navigate to nodes page
-    setTimeout(() => {
+    
+    try {
+      // Save to localStorage first
+      const savedQuestionsStr = localStorage.getItem("questionHistory") ?? "[]";
+      const savedQuestions = JSON.parse(savedQuestionsStr) as string[];
+      
+      // Don't add duplicates
+      if (!savedQuestions.includes(trimmedQuery)) {
+        const newQuestions = [trimmedQuery, ...savedQuestions].slice(0, 20);
+        localStorage.setItem("questionHistory", JSON.stringify(newQuestions));
+      }
+      
+      // Navigate to nodes page
+      const encodedQuery = encodeURIComponent(trimmedQuery);
+      const url = `/nodes?query=${encodedQuery}`;
+      console.log("Navigating to:", url);
+      
+      // Use window.location for a full page navigation as a fallback
+      window.location.href = url;
+    } catch (error) {
+      console.error("Error during search navigation:", error);
       setIsSearching(false);
-      // Navigate to the nodes page with the correct query parameter
-      router.push(`/nodes?query=${encodeURIComponent(query)}`);
-    }, 1000);
+    }
   };
 
   return (
-    <div className="relative w-full">
+    <form onSubmit={handleSubmit} className="relative w-full">
       <div className="rounded-lg bg-[#27272f] p-4 shadow-lg">
         <Textarea
           placeholder="Remember this..."
@@ -48,7 +61,6 @@ export default function SearchForm() {
         <div className="mt-4 flex items-center justify-end">
           <Button
             type="submit"
-            onClick={handleSubmit}
             className="rounded-md bg-[#4d8eff] px-3 py-1.5 text-white hover:bg-[#3a7aef]"
             disabled={isSearching}
           >
@@ -60,6 +72,6 @@ export default function SearchForm() {
           </Button>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
