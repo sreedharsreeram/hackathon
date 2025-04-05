@@ -5,10 +5,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowRight, Paperclip } from "lucide-react";
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SearchForm() {
   const [query, setQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -20,12 +22,11 @@ export default function SearchForm() {
     // In a real application, you would send the query to your backend
     // For now, we'll just simulate a search
     console.log("Searching for:", query);
-
-    // Simulate search delay
+    // Simulate search delay and then navigate to nodes page
     setTimeout(() => {
       setIsSearching(false);
-      // Here you would typically navigate to a results page or update the UI
-      alert(`You searched for: ${query}`);
+      // Navigate to the nodes page with the correct query parameter
+      router.push(`/nodes?query=${encodeURIComponent(query)}`);
     }, 1000);
   };
 
