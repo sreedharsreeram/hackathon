@@ -46,7 +46,7 @@ export const authConfig = {
      * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
      * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
      *
-     * @see https://next-auth.js.org/providers/github
+     * @see https://next-auth.js.org/providers/google
      */
   ],
   adapter: DrizzleAdapter(db, {
