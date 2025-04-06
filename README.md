@@ -19,7 +19,7 @@ Instead of juggling tabs and copy-pasting notes, Lynk brings everything you need
 - ⚡ **Real-time Interface**: Built with Next.js and Tailwind for a seamless user experience.
 - 🔐 **Cloud Sync**: All your research is stored securely in Supabase.
 
-## See it in action
+## The Main Web UI
 
 ![pawelzmarlak-2025-04-06T17_06_00 245Z](https://github.com/user-attachments/assets/0109e374-8cba-4760-a85f-1cd2ddc516f7)
 
