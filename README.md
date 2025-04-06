@@ -28,14 +28,13 @@ Instead of juggling tabs and copy-pasting notes, Lynk brings everything you need
 ## Built with
 - Frontend
   - Next.js — React framework for building performant web apps
-  - 
-  -Tailwind CSS — Utility-first CSS for fast UI styling
+  - Tailwind CSS — Utility-first CSS for fast UI styling
 
 
--Backend
-  -Supabase — Open source Firebase alternative for database and auth
+- Backend
+  - Supabase — Open source Firebase alternative for database and auth
   
-  -Tavily API — For intelligent, focused web search
+  - Tavily API — For intelligent, focused web search
   
-  -Gemini API (Google AI) — For generating relevant follow-up questions and summaries
+  - Gemini API (Google AI) — For generating relevant follow-up questions and summaries
    
