@@ -21,7 +21,7 @@ export default async function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable}`} suppressHydrationWarning>
-      <body>{children}</body>
+      <body suppressHydrationWarning >{children}</body>
     </html>
   );
 }

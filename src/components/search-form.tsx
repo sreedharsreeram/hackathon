@@ -2,49 +2,42 @@
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import doEverything, { createProject } from "@/server/actions";
 import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { FormEvent } from "react";
 
 export default function SearchForm() {
   const [query, setQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const router = useRouter();
 
-  const handleSubmit = (e: FormEvent) => {
+
+  const handleSubmit = async(e: FormEvent) => {
     e.preventDefault();
-    
-    const trimmedQuery = query.trim();
-    if (!trimmedQuery) return;
-    
-    console.log("Submitting search for:", trimmedQuery);
-    setIsSearching(true);
-    
-    try {
-      // Save to localStorage first
-      const savedQuestionsStr = localStorage.getItem("questionHistory") ?? "[]";
-      const savedQuestions = JSON.parse(savedQuestionsStr) as string[];
-      
-      // Don't add duplicates
-      if (!savedQuestions.includes(trimmedQuery)) {
-        const newQuestions = [trimmedQuery, ...savedQuestions].slice(0, 20);
-        localStorage.setItem("questionHistory", JSON.stringify(newQuestions));
-      }
-      
-      // Navigate to nodes page
-      const encodedQuery = encodeURIComponent(trimmedQuery);
-      const url = `/nodes?query=${encodedQuery}`;
-      console.log("Navigating to:", url);
-      
-      // Use window.location for a full page navigation as a fallback
-      window.location.href = url;
-    } catch (error) {
-      console.error("Error during search navigation:", error);
-      setIsSearching(false);
+
+    const project = await createProject();
+
+    if(!project) {
+      console.error("Failed to create project");
+      return;
     }
+
+    const res = await doEverything({
+      query,
+      projectId: project?.id
+    });
+
+    console.log("Response from doEverything:", res);
+
+    router.push(`/${project.id}`);
+
+    setIsSearching(true);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative w-full">
+    <form onSubmit={handleSubmit} className="relative w-full" suppressHydrationWarning>
       <div className="rounded-lg bg-[#27272f] p-4 shadow-lg">
         <Textarea
           placeholder="Remember this..."

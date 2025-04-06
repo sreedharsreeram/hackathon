@@ -58,11 +58,13 @@ export const nodes = createTable(
     answer: text('answer').notNull(),
     images: jsonb('images').$type<{url: string; description: string}[]>().notNull(),
     query: text('query').notNull(),
+    followupQuestions: jsonb('followup_questions').$type<string[]>().default([]).notNull(),
+    concepts: jsonb('concepts').$type<string[]>().default([]).notNull(),
     results: jsonb('results').$type<{title: string; url: string; content: string}[]>().default([]).notNull(),
     createdAt: timestamp('created_at', { mode: "date", withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    embedding: vector('embedding', { dimensions: 768 }),
+      embedding: vector('embedding', { dimensions: 768 }),
   },
   (table) => [
     index('nodeEmbeddingIndex').using('hnsw', table.embedding.op('vector_cosine_ops')),

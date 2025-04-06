@@ -4,6 +4,7 @@ import { auth } from "../auth";
 import { db } from "../db";
 import { nodes, projects, sources } from "../db/schema";
 import Embedding from "./Embedding";
+import FollowUp from "./followup";
 import websearch from "./Websearch";
 
 
@@ -39,10 +40,15 @@ type WebSearchType = {
   
   export const StoreNode = async ({
     node,
-    projectId
+    projectId,
+    followUps
   }: {
     node: WebSearchType;
     projectId: number;
+    followUps: {
+      followupQuestions: string[];
+      concepts: string[];
+    }
   }) => {
     const session = await auth();
     if (!session || !projectId || !node.answer || !node.images || !node.query || !node.results) {
@@ -72,6 +78,8 @@ type WebSearchType = {
         results: node.results,
         userId: session.user.id,
         projectId: projectId,
+        followupQuestions: followUps.followupQuestions,
+        concepts: followUps.concepts,
       })
       .returning({ id: nodes.id });
   
@@ -82,7 +90,7 @@ type WebSearchType = {
   
     // Use Promise.all to wait for all source insertions
     const sourcesPromises = node.results.map(async (result) => {
-      const embeddingVector = await Embedding({ query: result.content });
+      const embeddingVector = (await Embedding({ query: result.content })) as number[] | null;
       
       if (embeddingVector) {
         return await db.insert(sources).values({
@@ -101,14 +109,28 @@ type WebSearchType = {
     return nodeDB;
   };
 
-  export default async function doEverything(query: string) {
-    const project = await createProject();
-    if(!project) {
-      console.error("Failed to create project");
-      return null;
-    }
-    const node = await websearch(query);
-    const newNode = await StoreNode({ node, projectId: project.id });
+  export default async function doEverything({query , projectId}: {
+    query: string;
+    projectId: number;
+  }) {
+    const searchData = await websearch(query);
+    const followUps = await FollowUp({
+      answer: searchData.answer,
+    });
+    const newNode = await StoreNode({ node: searchData, projectId: projectId, followUps });
     console.log("New Node: ", newNode);
     return newNode;
+  }
+
+  export const getNodes = async (projectId: number) => {
+    const session = await auth();
+    if (!session) {
+      return null;
+    }
+    
+    const nodes = await db.query.nodes.findMany({
+      where: (nodes, { eq }) => eq(nodes.projectId, projectId),
+    });
+    
+    return nodes;
   }
