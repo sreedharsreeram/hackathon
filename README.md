@@ -1,5 +1,8 @@
 # Lynk: Your AI Research Companion 🧠🔗
 
+![pawelzmarlak-2025-04-06T17_01_27 971Z](https://github.com/user-attachments/assets/ca21286f-2bdd-47c9-b538-f8ad66cde2a9)
+
+
 ## What is this?
 
 Lynk is a research companion that transforms how you search, organize, and retain knowledge.
@@ -16,25 +19,24 @@ Instead of juggling tabs and copy-pasting notes, Lynk brings everything you need
 - ⚡ **Real-time Interface**: Built with Next.js and Tailwind for a seamless user experience.
 - 🔐 **Cloud Sync**: All your research is stored securely in Supabase.
 
+## The Main Web UI
 
+![pawelzmarlak-2025-04-06T17_04_53 763Z](https://github.com/user-attachments/assets/e3c56bff-028b-495c-879d-3f0d0a07bd7f)
 
-## How do I use this?
-
+![pawelzmarlak-2025-04-06T17_06_00 245Z](https://github.com/user-attachments/assets/0109e374-8cba-4760-a85f-1cd2ddc516f7)
 
 ## Architecture
-![WhatsApp Image 2025-04-06 at 8 01 52 AM](https://github.com/user-attachments/assets/175dd424-bdcb-4c95-8c06-a58423090ff5)
-
+![Screenshot 2025-04-06 091158](https://github.com/user-attachments/assets/8a1cd282-ddc6-4afb-a793-56d15cf7c5f3)
 
 ## Built with
-- Frontend
-  - Next.js — React framework for building performant web apps
-  - Tailwind CSS — Utility-first CSS for fast UI styling
+- Next.js 
+- Tailwind CSS 
+- Supabase 
+- TavilyAI
+- Gemini API
+- Drizzle ORM
 
-
-- Backend
-  - Supabase — Open source Firebase alternative for database and auth
+## How do I use this?
+The final product is available right now and can be used right away @ .tech
   
-  - Tavily API — For intelligent, focused web search
-  
-  - Gemini API (Google AI) — For generating relevant follow-up questions and summaries
    
