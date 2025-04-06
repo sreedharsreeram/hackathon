@@ -27,15 +27,9 @@ Instead of juggling tabs and copy-pasting notes, Lynk brings everything you need
 
 
 ## Built with
-- Frontend
-  - Next.js 
-  - Tailwind CSS 
-
-
-- Backend
-  - Supabase 
-  
-  - Tavily API 
-  
-  - Gemini API (Google AI)
+- Next.js 
+- Tailwind CSS 
+- Supabase 
+- Tavily API
+- Gemini API (Google AI)
    
