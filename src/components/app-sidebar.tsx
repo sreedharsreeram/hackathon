@@ -26,10 +26,10 @@ type Project = {
 function ProjectListItem({ project }: { project: Project }) {
   return (
     // Use motion here IF you wrap the list in a client component later
-    <div className='flex flex-row gap-2 justify-between items-center' >
+    <div className='flex flex-row gap-2 justify-between items-center max-w-full w-full' >
     <Link
       href={`/${project.id}`}
-      className="group flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors duration-150 ease-in-out text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+      className="group flex items-center w-3/5 gap-2 rounded-md px-3 py-2 text-sm transition-colors duration-150 ease-in-out text-muted-foreground hover:bg-accent hover:text-accent-foreground"
       >
       <CornerDownRight
         size={16}

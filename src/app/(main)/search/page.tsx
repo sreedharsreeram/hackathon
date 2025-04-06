@@ -1,8 +1,5 @@
-"use client";
-
 import { InputForm } from "@/components/mainSearch";
 import { FlipWords } from "@/components/ui/flip-words";
-import { motion } from "framer-motion";
 
 export default function Page() {
   const words = ["Exploring", "Learning", "Searching"];
@@ -15,14 +12,7 @@ export default function Page() {
           <FlipWords words={words} /> <br />
         </div>
 
-        {/* Animated InputForm */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
           <InputForm />
-        </motion.div>
       </div>
     </main>
   );
