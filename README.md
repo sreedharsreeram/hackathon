@@ -25,14 +25,8 @@ Instead of juggling tabs and copy-pasting notes, Lynk brings everything you need
 
 ![pawelzmarlak-2025-04-06T17_06_00 245Z](https://github.com/user-attachments/assets/0109e374-8cba-4760-a85f-1cd2ddc516f7)
 
-## How do I use this?
-The final product is available right now and can be used right away @ .tech
-
-
 ## Architecture
 ![Screenshot 2025-04-06 091158](https://github.com/user-attachments/assets/8a1cd282-ddc6-4afb-a793-56d15cf7c5f3)
-
-
 
 ## Built with
 - Next.js 
@@ -41,5 +35,8 @@ The final product is available right now and can be used right away @ .tech
 - TavilyAI
 - Gemini API
 - Drizzle ORM
+
+## How do I use this?
+The final product is available right now and can be used right away @ .tech
   
    
