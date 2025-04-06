@@ -4,6 +4,7 @@ import { auth } from "../auth";
 import { db } from "../db";
 import { nodes, projects, sources } from "../db/schema";
 import Embedding from "./Embedding";
+import websearch from "./Websearch";
 
 
 type WebSearchType = {
@@ -99,3 +100,15 @@ type WebSearchType = {
     
     return nodeDB;
   };
+
+  export default async function doEverything(query: string) {
+    const project = await createProject();
+    if(!project) {
+      console.error("Failed to create project");
+      return null;
+    }
+    const node = await websearch(query);
+    const newNode = await StoreNode({ node, projectId: project.id });
+    console.log("New Node: ", newNode);
+    return newNode;
+  }
