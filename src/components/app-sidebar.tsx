@@ -1,6 +1,6 @@
-import * as React from 'react';
-import Link from 'next/link';
-import { CornerDownRight, Plus, AlertCircle } from 'lucide-react'; // Import AlertCircle for errors
+import * as React from "react";
+import Link from "next/link";
+import { CornerDownRight, Plus, AlertCircle } from "lucide-react"; // Import AlertCircle for errors
 import {
   Sidebar,
   SidebarContent,
@@ -8,12 +8,12 @@ import {
   SidebarHeader,
   SidebarMenuButton,
   SidebarRail,
-} from '@/components/ui/sidebar';
-import UserAvatar from './UserAvatar';
-import { ModeToggle } from './ModeToggle';
-import { getProjects } from '@/server/actions'; // Server action
-import { headers } from 'next/headers';
-import TrashButton from './TrashButton';
+} from "@/components/ui/sidebar";
+import UserAvatar from "./UserAvatar";
+import { ModeToggle } from "./ModeToggle";
+import { getProjects } from "@/server/actions"; // Server action
+import { headers } from "next/headers";
+import TrashButton from "./TrashButton";
 
 // Define type for project data (can be shared)
 type Project = {
@@ -31,19 +31,21 @@ function ProjectListItem({ project }: { project: Project }) {
       href={`/${project.id}`}
       className="group flex items-center w-3/5 gap-2 rounded-md px-3 py-2 text-sm transition-colors duration-150 ease-in-out text-muted-foreground hover:bg-accent hover:text-accent-foreground"
       >
-      <CornerDownRight
-        size={16}
-        className="transition-transform group-hover:translate-x-0.5 text-muted-foreground/70"
+        <CornerDownRight
+          size={16}
+          className="text-muted-foreground/70 transition-transform group-hover:translate-x-0.5"
         />
-      <span className="truncate flex-1 font-medium">{project.name}</span>
-      {/* Active state styling is difficult here without client-side routing info */}
-    </Link>
-    <TrashButton id={project.id} name={project.name} />
-        </div>
+        <span className="flex-1 truncate font-medium">{project.name}</span>
+        {/* Active state styling is difficult here without client-side routing info */}
+      </Link>
+      <TrashButton id={project.id} name={project.name} />
+    </div>
   );
 }
 
-export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export async function AppSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
   const headersList = await headers();
   const pathname = headersList.get("x-pathname") || "";
 
@@ -62,20 +64,20 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
       projects = data;
     }
   } catch (err) {
-    console.error('AppSidebar: Error fetching projects:', err);
-    fetchError = 'Failed to load projects.';
+    console.error("AppSidebar: Error fetching projects:", err);
+    fetchError = "Failed to load projects.";
   }
 
   return (
     <Sidebar {...props}>
       {/* Header remains simple */}
-      <SidebarHeader className="flex flex-row items-center justify-between p-3 border-b">
+      <SidebarHeader className="flex flex-row items-center justify-between border-b p-3">
         <UserAvatar />
         <ModeToggle />
       </SidebarHeader>
 
       {/* Content section with better padding/spacing */}
-      <SidebarContent className="p-3 space-y-4">
+      <SidebarContent className="space-y-4 p-3" suppressHydrationWarning>
         <div className="flex items-center justify-between px-2">
           <h2 className="text-lg font-semibold tracking-tight">Projects</h2>
           {/* Optional: Add count badge? */}
@@ -84,12 +86,12 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
 
         {/* Conditional Rendering based on fetch result */}
         {fetchError ? (
-          <div className="flex items-center gap-2 px-2 text-sm text-destructive">
+          <div className="text-destructive flex items-center gap-2 px-2 text-sm">
             <AlertCircle className="h-4 w-4" />
             <span>{fetchError}</span>
           </div>
         ) : projects.length === 0 ? (
-          <div className="px-2 text-sm text-muted-foreground italic">
+          <div className="text-muted-foreground px-2 text-sm italic">
             No projects yet.
           </div>
         ) : (
@@ -103,11 +105,11 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
       </SidebarContent>
 
       {/* Footer remains simple */}
-      <SidebarFooter className="p-3 border-t">
+      <SidebarFooter className="border-t p-3">
         <SidebarMenuButton asChild>
           <Link
-            href={'/'}
-            className="w-full flex items-center justify-center gap-2 text-sm font-medium"
+            href={"/"}
+            className="flex w-full items-center justify-center gap-2 text-sm font-medium"
           >
             <Plus size={16} />
             New Project
