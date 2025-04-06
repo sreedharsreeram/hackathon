@@ -1,23 +1,23 @@
-import { AppSidebar } from "@/components/app-sidebar"
-import { auth } from "@/server/auth"
-import { redirect } from "next/navigation"
+import { AppSidebar } from "@/components/app-sidebar";
+import { auth } from "@/server/auth";
+import { redirect } from "next/navigation";
 
 export default async function MainLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  const session = await auth()
+  const session = await auth();
   if (!session?.user) {
-    redirect("/login")
+    redirect("/login");
   }
 
   return (
-    <div className="flex w-screen h-screen">
+    <div className="flex h-screen w-screen">
       <AppSidebar />
-      <main className="flex-1 flex justify-center w-full h-full bg-background text-foreground p-4">
-    {children}
-</main>
+      <main className="text-foreground flex h-full w-full flex-1 justify-center bg-[radial-gradient(circle,#73737350_1px,transparent_1px)] p-4">
+        {children}
+      </main>
     </div>
-  )
+  );
 }

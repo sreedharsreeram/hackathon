@@ -19,17 +19,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} bg-background text-foreground`} suppressHydrationWarning>
+      <body
+        className={`${inter.className} bg-background text-foreground bg-[radial-gradient(circle,#73737350_1px,transparent_1px)] bg-[size:20px_20px]`}
+        suppressHydrationWarning
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-                    <SidebarProvider>
-          {children}
-          <Toaster />
-                    </SidebarProvider>
+          <SidebarProvider>
+            {children}
+            <Toaster />
+          </SidebarProvider>
         </ThemeProvider>
       </body>
     </html>
