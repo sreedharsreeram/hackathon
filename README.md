@@ -21,6 +21,7 @@ Instead of juggling tabs and copy-pasting notes, Lynk brings everything you need
 
 
 ## How do I use this?
+The final product is ready to use at lynk.tech
 
 
 ## Architecture
