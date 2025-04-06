@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useRef } from 'react';
 
-import { toast } from "sonner"
+import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Textarea } from "./ui/textarea"
-import { Loader2, ArrowRight } from "lucide-react"
+import { Loader2, ArrowRight, TrendingUp, BookOpen, Lightbulb, Sparkles } from "lucide-react"
 import { useProgressiveSearch } from '@/hooks/useProgressiveSearch'
 import confetti from "canvas-confetti"
 
@@ -59,7 +59,31 @@ export function InputForm() {
         }
     }
 
+    const suggestedQuestions = [
+      {
+        question: "What are the latest advances in quantum computing?",
+        icon: TrendingUp,
+        delay: 0.4,
+      },
+      {
+        question: "How does climate change affect biodiversity?",
+        icon: BookOpen,
+        delay: 0.5,
+      },
+      {
+        question: "What are the ethical implications of artificial intelligence?",
+        icon: Lightbulb,
+        delay: 0.6,
+      },
+    ];
+
     return (
+      <>
+              <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 relative">
                 <FormField
@@ -98,5 +122,34 @@ export function InputForm() {
                 />
             </form>
         </Form>
+        </motion.div>
+            {/* Suggested Questions */}
+            <div className="mt-6">
+            <div className="flex items-center gap-2 mb-3">
+              <Sparkles className="h-4 w-4 text-primary" />
+              <p className="text-sm font-medium text-muted-foreground">Try these questions</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {suggestedQuestions.map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: item.delay }}
+                >
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start text-left h-auto py-3 px-4 bg-background hover:bg-accent/20 border border-border hover:border-primary/30 transition-all group"
+                    onClick={() => form.setValue("query", item.question)}
+                  >
+                    <item.icon className="h-4 w-4 mr-2 text-primary/70 group-hover:text-primary transition-colors" />
+                    <span className="text-sm font-normal truncate">{item.question}</span>
+                  </Button>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </>
     )
 }
