@@ -30,6 +30,8 @@ Instead of juggling tabs and copy-pasting notes, Lynk brings everything you need
 - Next.js 
 - Tailwind CSS 
 - Supabase 
-- Tavily API
-- Gemini API (Google AI)
+- TavilyAI
+- Gemini API
+- Drizzle ORM
+  
    
