@@ -1,4 +1,6 @@
 # Lynk: Your AI Research Companion 🧠🔗
+![pawelzmarlak-2025-04-06T16_26_19 524Z](https://github.com/user-attachments/assets/8651eed7-1bd2-43f2-859f-531df6227c33)
+
 
 ## What is this?
 
