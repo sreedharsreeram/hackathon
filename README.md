@@ -22,7 +22,8 @@ Instead of juggling tabs and copy-pasting notes, Lynk brings everything you need
 
 
 ## Architecture
-![WhatsApp Image 2025-04-06 at 8 01 52 AM](https://github.com/user-attachments/assets/175dd424-bdcb-4c95-8c06-a58423090ff5)
+![Screenshot 2025-04-06 091158](https://github.com/user-attachments/assets/8a1cd282-ddc6-4afb-a793-56d15cf7c5f3)
+
 
 
 ## Built with
