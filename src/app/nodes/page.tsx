@@ -12,13 +12,6 @@ import type { Node, Edge, NodeChange } from "reactflow";
 import "reactflow/dist/style.css";
 
 import BaseNodeDemo from "@/components/base-node-demo";
-import { AuthProvider } from "@/components/auth-provider";
-import { CustomSidebar } from "@/components/custom-sidebar";
-import { 
-  Sidebar, 
-  SidebarInset,
-  SidebarProvider
-} from "@/components/ui/sidebar";
 import typedData from "@/data.json";
 
 // Define the Source interface
@@ -83,17 +76,6 @@ export default function NodesPage() {
   };
 
   return (
-    <AuthProvider>
-      <div className="flex h-screen w-full">
-        <SidebarProvider defaultOpen={true}>
-          <Sidebar>
-            <CustomSidebar 
-              currentQuery={query} 
-              onQueryClick={handleQueryClick}
-            />
-          </Sidebar>
-          
-          <SidebarInset>
             <ReactFlow
               nodes={nodes}
               edges={edges}
@@ -104,10 +86,6 @@ export default function NodesPage() {
               <Background />
               <Controls />
               <MiniMap />
-            </ReactFlow>
-          </SidebarInset>
-        </SidebarProvider>
-      </div>
-    </AuthProvider>
+              </ReactFlow>
   );
 }

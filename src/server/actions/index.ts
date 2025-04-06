@@ -134,3 +134,17 @@ type WebSearchType = {
     
     return nodes;
   }
+
+  export const getProjects = async () => {
+    const session = await auth();
+    if (!session) {
+      return null;
+    }
+    
+    const projects = await db.query.projects.findMany({
+      where: (projects, { eq }) => eq(projects.userId, session.user.id),
+    });
+    
+    return projects;
+  }
+  
