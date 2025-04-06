@@ -1,45 +1,36 @@
-import { AppSidebar } from "@/components/app-sidebar";
-import { ThemeProvider } from "@/components/Provider/provider";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import "@/styles/globals.css";
-import { Toaster } from "@/components/ui/sonner"
-
-import { type Metadata } from "next";
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import "@/styles/globals.css";
+import { Toaster } from "sonner";
+import { ThemeProvider } from "@/components/Provider/provider";
+import { SidebarProvider } from "@/components/ui/sidebar";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Hackathon",
-  description: "Help you get back to research",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  title: "Research Assistant",
+  description: "Your AI Research Assistant",
 };
 
-const geist = Inter({
-  subsets: ["latin"],
-  variable: "--font-geist-sans",
-});
-
-export default async function RootLayout({
+export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning >
+      <body className={`${inter.className} bg-background text-foreground`} suppressHydrationWarning>
         <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-                    <Toaster closeButton position="bottom-right" richColors />
-            <SidebarProvider>
-              <AppSidebar />
-              <SidebarInset>
-            <SidebarTrigger className="-ml-1 z-[9999] absolute m-4" />
-        {children}
-
-  </SidebarInset>
-            </SidebarProvider>
-    </ThemeProvider>
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+                    <SidebarProvider>
+          {children}
+          <Toaster />
+                    </SidebarProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

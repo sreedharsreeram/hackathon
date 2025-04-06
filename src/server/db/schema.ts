@@ -30,6 +30,7 @@ export const projects = createTable(
     userId: varchar('user_id', { length: 255 })
       .notNull()
       .references(() => users.id),
+      name: text('name').notNull(),
     // Chat history as a JSONB array of question-answer pairs
     chatHistory: jsonb('chat_history').$type<{
       question: string;
@@ -68,6 +69,7 @@ export const nodes = createTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
       embedding: vector('embedding', { dimensions: 768 }),
+      answerEmbedding: vector('answer_embedding', { dimensions: 768 }),
   },
   (table) => [
     index('nodeEmbeddingIndex').using('hnsw', table.embedding.op('vector_cosine_ops')),

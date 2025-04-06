@@ -1,6 +1,7 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { type DefaultSession, type NextAuthConfig } from "next-auth";
+import type { DefaultSession, NextAuthConfig } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { env } from "@/env";
 
 import { db } from "@/server/db";
 import {
@@ -20,15 +21,14 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      // ...other properties
-      // role: UserRole;
     } & DefaultSession["user"];
   }
+}
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+declare module "@auth/core/jwt" {
+  interface JWT {
+    id: string;
+  }
 }
 
 /**
@@ -38,8 +38,38 @@ declare module "next-auth" {
  */
 
 export const authConfig = {
+  debug: process.env.NODE_ENV === "development",
+  secret: env.AUTH_SECRET,
+  session: {
+    strategy: "jwt"
+  },
+  cookies: {
+    sessionToken: {
+      name: process.env.NODE_ENV === "development" ? "next-auth.session-token" : "__Secure-next-auth.session-token",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production"
+      }
+    }
+  },
+  pages: {
+    signIn: '/login',
+    error: '/login'
+  },
   providers: [
-    GoogleProvider,
+    GoogleProvider({
+      clientId: env.AUTH_GOOGLE_ID,
+      clientSecret: env.AUTH_GOOGLE_SECRET,
+      authorization: {
+        params: {
+          prompt: "select_account",
+          access_type: "offline",
+          response_type: "code"
+        }
+      }
+    }),
     /**
      * ...add more providers here.
      *
@@ -57,12 +87,17 @@ export const authConfig = {
     verificationTokensTable: verificationTokens,
   }),
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    session: ({ session, token }) => {
+      if (token && typeof token.id === 'string') {
+        session.user.id = token.id;
+      }
+      return session;
+    },
   },
 } satisfies NextAuthConfig;
