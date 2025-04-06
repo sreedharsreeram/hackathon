@@ -1,6 +1,6 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { ThemeProvider } from "@/components/Provider/provider";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import "@/styles/globals.css";
 import { Toaster } from "@/components/ui/sonner"
 
@@ -33,7 +33,11 @@ export default async function RootLayout({
                     <Toaster closeButton position="bottom-right" richColors />
             <SidebarProvider>
               <AppSidebar />
+              <SidebarInset>
+            <SidebarTrigger className="-ml-1 z-[9999] absolute m-4" />
         {children}
+
+  </SidebarInset>
             </SidebarProvider>
     </ThemeProvider>
       </body>

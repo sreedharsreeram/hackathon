@@ -6,6 +6,7 @@ import { nodes, projects, sources } from "../db/schema";
 import Embedding from "./Embedding";
 import FollowUp from "./followup";
 import websearch from "./Websearch";
+import { eq } from "drizzle-orm";
 
 
 type WebSearchType = {
@@ -69,6 +70,18 @@ type WebSearchType = {
       return null;
     }
   
+    // Fetch the current project data including chat history
+    const currentProject = await db.query.projects.findFirst({
+      where: (projects, { eq }) => eq(projects.id, projectId),
+      columns: { chatHistory: true } // Only select chatHistory for efficiency
+    });
+
+    if (!currentProject) {
+      console.error("Failed to fetch current project data for chat history update");
+      // Decide if you should still return the node or handle error differently
+      // For now, we'll proceed but log the error
+    }
+  
     // Now insert the node with the verified project ID
     const [nodeDB] = await db.insert(nodes)
       .values({
@@ -105,13 +118,35 @@ type WebSearchType = {
     });
   
     await Promise.all(sourcesPromises);
+
+    // Append to chat history if current project data was fetched and nodeDB exists
+    if (currentProject && nodeDB) {
+      const newChatEntry = {
+        question: node.query,
+        answer: node.answer, 
+        timestamp: new Date().toISOString(),
+        nodeId: nodeDB.id, // Include the ID of the newly created node
+      };
+
+      // Ensure chatHistory is treated as an array, even if null/undefined initially
+      const updatedChatHistory = [...(currentProject.chatHistory || []), newChatEntry];
+
+      // Update the project with the new chat history and update timestamp
+      await db.update(projects)
+        .set({
+          chatHistory: updatedChatHistory,
+          updatedAt: new Date(), // Update the timestamp
+        })
+        .where(eq(projects.id, projectId)); // Use eq from drizzle-orm
+    }
     
     return nodeDB;
   };
 
-  export default async function doEverything({query , projectId}: {
+  export default async function doEverything({query , projectId, parentId}: { // Add parentId here
     query: string;
     projectId: number;
+    parentId?: number;// Make parentId optional and type number
   }) {
     const searchData = await websearch(query);
     const followUps = await FollowUp({
@@ -148,3 +183,15 @@ type WebSearchType = {
     return projects;
   }
   
+  export const getChats = async() => {
+  const session = await auth();
+  if (!session) {
+    return null;
+  }
+  
+  const chats = await db.query.projects.findMany({
+    where: (projects, { eq }) => eq(projects.userId, session.user.id),
+  });
+  console.log(getChats)
+  return chats.map(project => project.chatHistory).flat();
+  }

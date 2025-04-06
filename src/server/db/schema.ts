@@ -10,6 +10,7 @@ import {
   timestamp, 
   varchar,
   boolean,
+  integer,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
 
@@ -34,6 +35,7 @@ export const projects = createTable(
       question: string;
       answer: string;
       timestamp: string;
+      nodeId: number;
     }[]>().default([]).notNull(),
     createdAt: timestamp('created_at', { mode: "date", withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
@@ -49,6 +51,7 @@ export const nodes = createTable(
   'nodes',
   {
     id: serial('id').primaryKey(),
+    parentId: integer('parent_id'),
     projectId: serial('project_id')
       .notNull()
       .references(() => projects.id),
@@ -122,6 +125,14 @@ export const nodesRelations = relations(nodes, ({ one, many }) => ({
   project: one(projects, { fields: [nodes.projectId], references: [projects.id] }),
   user: one(users, { fields: [nodes.userId], references: [users.id] }),
   sources: many(sources),
+  parent: one(nodes, { 
+    fields: [nodes.parentId], 
+    references: [nodes.id],
+    relationName: 'nodeHierarchy'
+  }),
+  children: many(nodes, {
+    relationName: 'nodeHierarchy'
+  })
 }));
 
 export const sourcesRelations = relations(sources, ({ one }) => ({

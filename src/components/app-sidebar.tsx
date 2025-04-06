@@ -34,11 +34,13 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
             key={project.id}
             className="group flex items-center justify-between rounded-md px-2 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
           >
-            <div className="flex flex-row justify-center items-center gap-2 mx-5">
+            <Link
+          href={`/${project.id}`}
+          className="flex flex-row justify-center items-center gap-2 mx-5">
               <CornerDownRight size={17} />
               <span className="font-medium">Project {project.id}</span>
              
-            </div>
+            </Link>
           </div>
         ))}
       </div>

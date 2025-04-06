@@ -3,6 +3,123 @@
 
 @custom-variant dark (&:is(.dark *));
 
+body {
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+  background-color: black;
+  color: white;
+}
+
+.light body {
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+.react-flow__node {
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.react-flow__handle {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--handle-color);
+}
+
+.react-flow__edge-path {
+  stroke: #666;
+  stroke-width: 1;
+  stroke-dasharray: 5 5;
+}
+
+.dark .react-flow__controls {
+  background-color: rgba(30, 30, 30, 0.8);
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.light .react-flow__controls {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  padding: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dark .react-flow__controls-button {
+  background-color: rgba(50, 50, 50, 0.8);
+  border: none;
+  border-radius: 4px;
+  color: #ccc;
+}
+
+.light .react-flow__controls-button {
+  background-color: rgba(240, 240, 240, 0.8);
+  border: none;
+  border-radius: 4px;
+  color: #333;
+}
+
+.dark .react-flow__controls-button:hover {
+  background-color: rgba(70, 70, 70, 0.8);
+}
+
+.light .react-flow__controls-button:hover {
+  background-color: rgba(220, 220, 220, 0.8);
+}
+
+/* Override React Flow's default styles to ensure our inputs work */
+.react-flow__node-questionNode {
+  pointer-events: all !important;
+}
+
+.react-flow__node-questionNode textarea,
+.react-flow__node-questionNode button {
+  pointer-events: all !important;
+}
+
+/* Ensure textarea is always on top and interactive */
+textarea {
+  position: relative;
+  z-index: 1000 !important;
+}
+
+/* Ensure buttons are clickable */
+button {
+  position: relative;
+  z-index: 1000 !important;
+}
+
+/* Disable text selection in the flow except in textareas */
+.react-flow {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+textarea {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* Fix for theme toggle */
+html.light {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+
+
 @theme {
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
