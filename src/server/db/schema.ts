@@ -10,6 +10,7 @@ import {
   timestamp, 
   varchar,
   boolean,
+  integer,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
 
@@ -29,11 +30,13 @@ export const projects = createTable(
     userId: varchar('user_id', { length: 255 })
       .notNull()
       .references(() => users.id),
+      name: text('name').notNull(),
     // Chat history as a JSONB array of question-answer pairs
     chatHistory: jsonb('chat_history').$type<{
       question: string;
       answer: string;
       timestamp: string;
+      nodeId: number;
     }[]>().default([]).notNull(),
     createdAt: timestamp('created_at', { mode: "date", withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
@@ -49,6 +52,7 @@ export const nodes = createTable(
   'nodes',
   {
     id: serial('id').primaryKey(),
+    parentId: integer('parent_id'),
     projectId: serial('project_id')
       .notNull()
       .references(() => projects.id),
@@ -65,6 +69,7 @@ export const nodes = createTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
       embedding: vector('embedding', { dimensions: 768 }),
+      answerEmbedding: vector('answer_embedding', { dimensions: 768 }),
   },
   (table) => [
     index('nodeEmbeddingIndex').using('hnsw', table.embedding.op('vector_cosine_ops')),
@@ -122,6 +127,14 @@ export const nodesRelations = relations(nodes, ({ one, many }) => ({
   project: one(projects, { fields: [nodes.projectId], references: [projects.id] }),
   user: one(users, { fields: [nodes.userId], references: [users.id] }),
   sources: many(sources),
+  parent: one(nodes, { 
+    fields: [nodes.parentId], 
+    references: [nodes.id],
+    relationName: 'nodeHierarchy'
+  }),
+  children: many(nodes, {
+    relationName: 'nodeHierarchy'
+  })
 }));
 
 export const sourcesRelations = relations(sources, ({ one }) => ({

@@ -1,0 +1,2 @@
+ALTER TABLE "nodes" ADD COLUMN "parent_id" text;--> statement-breakpoint
+ALTER TABLE "nodes" ADD CONSTRAINT "nodes_parent_id_nodes_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."nodes"("id") ON DELETE no action ON UPDATE no action;

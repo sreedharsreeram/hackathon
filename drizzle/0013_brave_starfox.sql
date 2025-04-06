@@ -1,0 +1,1 @@
+ALTER TABLE "nodes" ADD COLUMN "answer_embedding" vector(768);
