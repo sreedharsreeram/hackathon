@@ -20,7 +20,13 @@ type Props = {
   size?: 'sm' | 'default'
 }
 
-const TrashButton = ({ id, name = 'project', onDelete, size = 'default' }: Props) => {
+interface ProjectResponse {
+  id: number
+  name: string
+  [key: string]: unknown
+}
+
+const TrashButton = ({ id, onDelete, size = 'default' }: Props) => {
   const [isDeleting, setIsDeleting] = useState(false)
   const [isConfirming, setIsConfirming] = useState(false)
   const router = useRouter()
@@ -28,20 +34,16 @@ const TrashButton = ({ id, name = 'project', onDelete, size = 'default' }: Props
   const handleDelete = async () => {
     setIsDeleting(true)
     try {
-      const res = await deleteProject(id)
+      const res = await deleteProject(id) as ProjectResponse | null
       
-      if (res) {
-        // Show themed success toast
+      if (res?.name) {
+        // Show success toast
         toast.success("Project deleted", {
           description: `"${res.name}" has been permanently deleted`,
-          className: "bg-background border-border",
-          descriptionClassName: "text-muted-foreground",
         })
         
         // Callback to update UI immediately
-        if (onDelete) {
-          onDelete()
-        }
+        onDelete?.()
         
         // Force a router refresh to update all data
         router.refresh()
@@ -51,19 +53,15 @@ const TrashButton = ({ id, name = 'project', onDelete, size = 'default' }: Props
           router.push('/search')
         }
       } else {
-        // Show themed error toast
+        // Show error toast
         toast.error("Failed to delete", {
           description: "There was an error deleting this project",
-          className: "bg-background border-destructive/50",
-          descriptionClassName: "text-muted-foreground",
         })
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Error deleting project:", error)
       toast.error("An error occurred", {
         description: "There was a problem with your request",
-        className: "bg-background border-destructive/50",
-        descriptionClassName: "text-muted-foreground",
       })
     } finally {
       setIsDeleting(false)
