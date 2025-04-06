@@ -21,10 +21,9 @@ Instead of juggling tabs and copy-pasting notes, Lynk brings everything you need
 
 ## The Main Web UI
 
-![pawelzmarlak-2025-04-06T17_06_00 245Z](https://github.com/user-attachments/assets/0109e374-8cba-4760-a85f-1cd2ddc516f7)
-
-
 ![WhatsApp Image 2025-04-06 at 10 05 02 AM](https://github.com/user-attachments/assets/08312b77-5b63-4118-8b0d-c3210d101570)
+
+![pawelzmarlak-2025-04-06T17_06_00 245Z](https://github.com/user-attachments/assets/0109e374-8cba-4760-a85f-1cd2ddc516f7)
 
 ## How do I use this?
 The final product is available right now and can be used right away @ .tech
