@@ -12,11 +12,10 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import { Textarea } from "./ui/textarea"
-import { Loader2 } from "lucide-react"
+import { Loader2, ArrowRight } from "lucide-react"
 import { useProgressiveSearch } from '@/hooks/useProgressiveSearch'
 import confetti from "canvas-confetti"
 
@@ -29,6 +28,7 @@ const FormSchema = z.object({
 export function InputForm() {
     const { isLoading, startResearchProcess } = useProgressiveSearch();
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -41,51 +41,62 @@ export function InputForm() {
         await startResearchProcess(data.query);
     }
 
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-        <FormField
-          control={form.control}
-          name="query"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-              <Textarea placeholder="What topic do you want to research?" className="text-foreground bg-background min-h-[80px]" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button 
-          ref={buttonRef}
-          type="submit" 
-          className="w-full" 
-          disabled={isLoading}
-          onClick={async (event) => {
-            const isValid = await form.trigger('query');
-
-            if (isValid && buttonRef.current) {
-              const rect = buttonRef.current.getBoundingClientRect();
-              const x = rect.left + rect.width / 2;
-              const y = rect.top + rect.height / 2;
-              confetti({
+    const triggerConfetti = async () => {
+        const isValid = await form.trigger('query');
+        
+        if (isValid && buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            confetti({
                 particleCount: 100,
                 spread: 70,
                 origin: {
-                  x: x / window.innerWidth,
-                  y: y / window.innerHeight,
+                    x: x / window.innerWidth,
+                    y: y / window.innerHeight,
                 },
-              });
-            }
-          }}
-        >
-            {isLoading ? (
-                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait...</>
-            ) : (
-                'Start Research'
-            )}
-        </Button>
-      </form>
-    </Form>
-  )
+            });
+        }
+    }
+
+    return (
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 relative">
+                <FormField
+                    control={form.control}
+                    name="query"
+                    render={({ field }) => (
+                        <FormItem className="relative">
+                            <FormControl>
+                                <div className="relative">
+                                    <Textarea 
+                                        placeholder="What topic do you want to research?" 
+                                        className="text-foreground bg-background min-h-[120px] pr-[100px] resize-none" 
+                                        {...field} 
+                                    />
+                                    <div className="absolute bottom-3 right-3">
+                                        <Button 
+                                            ref={buttonRef}
+                                            type="submit" 
+                                            disabled={isLoading}
+                                            size="sm"
+                                            className="rounded-full px-4"
+                                            onClick={triggerConfetti}
+                                        >
+                                            {isLoading ? (
+                                                <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Wait</>
+                                            ) : (
+                                                <><span className="mr-1">Research</span> <ArrowRight className="h-3 w-3" /></>
+                                            )}
+                                        </Button>
+                                    </div>
+                                </div>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            </form>
+        </Form>
+    )
 }

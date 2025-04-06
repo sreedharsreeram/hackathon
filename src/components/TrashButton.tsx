@@ -48,7 +48,7 @@ const TrashButton = ({ id, name = 'project', onDelete, size = 'default' }: Props
         
         // Navigate to dashboard if we're on a project page
         if (window.location.pathname.includes(`/${id}`)) {
-          router.push('/dashboard')
+          router.push('/search')
         }
       } else {
         // Show themed error toast
