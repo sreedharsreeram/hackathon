@@ -23,7 +23,7 @@ export default async function websearch(query: string) {
   });
   const results = await client.search(query,{
     maxResults: 3,
-    includeAnswer: "advanced", 
+    includeAnswer: true, 
     includeImages: true,
     includeImageDescriptions: true,
     includeRawContent: true
