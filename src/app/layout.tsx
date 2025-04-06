@@ -1,9 +1,11 @@
-import { auth } from "@/server/auth";
+import { AppSidebar } from "@/components/app-sidebar";
+import { ThemeProvider } from "@/components/Provider/provider";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import "@/styles/globals.css";
+import { Toaster } from "@/components/ui/sonner"
 
 import { type Metadata } from "next";
-import { Geist } from "next/font/google";
-import { redirect } from "next/navigation";
+import { Inter } from "next/font/google";
 
 export const metadata: Metadata = {
   title: "Hackathon",
@@ -11,7 +13,7 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-const geist = Geist({
+const geist = Inter({
   subsets: ["latin"],
   variable: "--font-geist-sans",
 });
@@ -20,8 +22,21 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geist.variable}`} suppressHydrationWarning>
-      <body suppressHydrationWarning >{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning >
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+                    <Toaster closeButton position="bottom-right" richColors />
+            <SidebarProvider>
+              <AppSidebar />
+        {children}
+            </SidebarProvider>
+    </ThemeProvider>
+      </body>
     </html>
   );
 }

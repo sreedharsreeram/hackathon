@@ -186,42 +186,19 @@ const NodeDetailFlow = ({ nodeData }: { nodeData: Node }) => {
       nodeTypes={nodeTypes}
       fitView
       proOptions={{ hideAttribution: true }}
-      className="bg-white dark:bg-gray-900"
+      className="bg-background"
     >
-      <Background color="#aaa" gap={16} size={1} className="dark:bg-gray-900" />
+      <Background color="#aaa" gap={16} size={1} className="bg-background" />
       <Controls
         position="bottom-right"
-        className="bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+        className="bg-background border-muted text-muted-foreground"
       />
       <MiniMap
         nodeStrokeWidth={3}
         position="bottom-left"
-        className="bg-white dark:border-gray-700 dark:bg-gray-800"
+        className="bg-background border-muted"
       />
 
-      {/* Back button overlay */}
-      <div className="absolute top-4 left-4 z-10">
-        <Link
-          href="/"
-          className="inline-flex items-center rounded-md bg-white px-3 py-2 text-blue-600 shadow-md hover:text-blue-800 dark:bg-gray-800 dark:text-blue-400 dark:hover:text-blue-300"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="mr-1 h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M10 19l-7-7m0 0l7-7m-7 7h18"
-            />
-          </svg>
-          Back to Flow
-        </Link>
-      </div>
     </ReactFlow>
   );
 };
@@ -258,7 +235,7 @@ const NodePage = () => {
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-white dark:bg-gray-900">
+      <div className="flex h-screen items-center justify-center bg-background">
         Loading node data...
       </div>
     );
@@ -266,7 +243,7 @@ const NodePage = () => {
 
   if (error) {
     return (
-      <div className="flex h-screen items-center justify-center bg-white text-red-500 dark:bg-gray-900">
+      <div className="flex h-screen items-center justify-center bg-background text-destructive">
         {error}
       </div>
     );
@@ -274,7 +251,7 @@ const NodePage = () => {
 
   if (!data || data.length === 0) {
     return (
-      <div className="flex h-screen items-center justify-center bg-white dark:bg-gray-900">
+      <div className="flex h-screen items-center justify-center bg-background">
         No node data found for this ID.
       </div>
     );
