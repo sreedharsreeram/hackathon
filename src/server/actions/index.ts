@@ -6,7 +6,7 @@ import { nodes, projects, sources } from "../db/schema";
 import Embedding from "./Embedding";
 import FollowUp from "./followup";
 import websearch from "./Websearch";
-import { eq, asc, desc } from "drizzle-orm";
+import { eq, asc, desc, inArray } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 
@@ -468,3 +468,73 @@ type WebSearchType = {
         return null;
     }
   };
+
+export const deleteProject = async (projectId: number) => {
+  const session = await auth();
+  if (!session?.user?.id) {
+    console.error("[Action deleteProject] User session not found.");
+    return null;
+  }
+
+  try {
+    // First, verify the project exists and belongs to the current user
+    const projectToDelete = await db.query.projects.findFirst({
+      where: (p, { eq, and }) => and(
+        eq(p.id, projectId),
+        eq(p.userId, session.user.id)
+      ),
+      with: {
+        nodes: true
+      }
+    });
+
+    if (!projectToDelete) {
+      console.error(`[Action deleteProject] Project ${projectId} not found or doesn't belong to the current user.`);
+      return null;
+    }
+
+    console.log(`[Action deleteProject] Deleting project ${projectId} "${projectToDelete.name}" with ${projectToDelete.nodes.length} nodes`);
+    
+    // Step 1: Get all node IDs for this project for source deletion
+    const nodeIds = projectToDelete.nodes.map(node => node.id);
+    console.log(`[Action deleteProject] Found ${nodeIds.length} nodes to delete for project ${projectId}`);
+
+    // Step 2: Delete all sources associated with these nodes
+    if (nodeIds.length > 0) {
+      // Delete sources without using count in RETURNING
+      await db.delete(sources)
+        .where(inArray(sources.nodeId, nodeIds));
+      
+      console.log(`[Action deleteProject] Deleted sources for nodes in project ${projectId}`);
+    } else {
+      console.log(`[Action deleteProject] No nodes found for project ${projectId}, skipping source deletion`);
+    }
+    
+    // Step 3: Delete all nodes associated with this project
+    // Don't use count in RETURNING
+    await db.delete(nodes)
+      .where(eq(nodes.projectId, projectId));
+    
+    console.log(`[Action deleteProject] Deleted nodes for project ${projectId}`);
+    
+    // Step 4: Delete the project
+    const [deletedProject] = await db.delete(projects)
+      .where(eq(projects.id, projectId))
+      .returning({
+        id: projects.id,
+        name: projects.name
+      });
+    
+    if (!deletedProject) {
+      console.error(`[Action deleteProject] Project ${projectId} not found after node deletion.`);
+      return null;
+    }
+    
+    console.log(`[Action deleteProject] Project ${projectId} "${deletedProject.name}" deleted successfully.`);
+    return deletedProject;
+    
+  } catch (error) {
+    console.error(`[Action deleteProject] Error deleting project ${projectId}:`, error);
+    return null;
+  }
+};

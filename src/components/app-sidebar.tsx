@@ -13,6 +13,7 @@ import UserAvatar from './UserAvatar';
 import { ModeToggle } from './ModeToggle';
 import { getProjects } from '@/server/actions'; // Server action
 import { headers } from 'next/headers';
+import TrashButton from './TrashButton';
 
 // Define type for project data (can be shared)
 type Project = {
@@ -25,17 +26,20 @@ type Project = {
 function ProjectListItem({ project }: { project: Project }) {
   return (
     // Use motion here IF you wrap the list in a client component later
+    <div className='flex flex-row gap-2 justify-between items-center' >
     <Link
       href={`/${project.id}`}
       className="group flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors duration-150 ease-in-out text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-    >
+      >
       <CornerDownRight
         size={16}
         className="transition-transform group-hover:translate-x-0.5 text-muted-foreground/70"
-      />
+        />
       <span className="truncate flex-1 font-medium">{project.name}</span>
       {/* Active state styling is difficult here without client-side routing info */}
     </Link>
+    <TrashButton id={project.id} name={project.name} />
+        </div>
   );
 }
 
