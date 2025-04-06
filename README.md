@@ -1,13 +1,13 @@
-# Lynk: Your AI Research Companion 🧠🔗
+# Athyna: Your AI Research Companion 🧠🔗
 
 ![pawelzmarlak-2025-04-06T17_01_27 971Z](https://github.com/user-attachments/assets/ca21286f-2bdd-47c9-b538-f8ad66cde2a9)
 
 
 ## What is this?
 
-Lynk is a research companion that transforms how you search, organize, and retain knowledge.
+Athyna is a research companion that transforms how you search, organize, and retain knowledge.
 
-Instead of juggling tabs and copy-pasting notes, Lynk brings everything you need into one smart, responsive platform. It enhances your research process by delivering precise web results, generating insightful follow-up questions, and keeping track of your previous sessions for easy reference and deeper understanding.
+Instead of juggling tabs and copy-pasting notes, Athyna brings everything you need into one smart, responsive platform. It enhances your research process by delivering precise web results, generating insightful follow-up questions, and keeping track of your previous sessions for easy reference and deeper understanding.
 
 
 ## Key Features 🚀
