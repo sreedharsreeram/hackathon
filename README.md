@@ -37,6 +37,6 @@ Instead of juggling tabs and copy-pasting notes, Athyna brings everything you ne
 - Drizzle ORM
 
 ## How do I use this?
-The final product is available right now and can be used right away @ .tech
+The final product is available right now and can be used right away @ athyna.tech
   
    
