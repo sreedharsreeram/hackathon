@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/Provider/provider";
 import { Analytics } from "@vercel/analytics/react"
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +32,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SidebarProvider>
+          <SpeedInsights />
             <Analytics />
             {children}
             <Toaster />
