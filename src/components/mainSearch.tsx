@@ -28,7 +28,6 @@ const FormSchema = z.object({
 export function InputForm() {
     const { isLoading, startResearchProcess } = useProgressiveSearch();
     const buttonRef = useRef<HTMLButtonElement>(null);
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -61,12 +60,12 @@ export function InputForm() {
 
     const suggestedQuestions = [
       {
-        question: "What are the latest advances in quantum computing?",
+        question: "what is pizza?",
         icon: TrendingUp,
         delay: 0.4,
       },
       {
-        question: "How does climate change affect biodiversity?",
+        question: "What is an earthquake?",
         icon: BookOpen,
         delay: 0.5,
       },

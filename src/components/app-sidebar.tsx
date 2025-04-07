@@ -77,7 +77,7 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
       {/* Content section with better padding/spacing */}
       <SidebarContent className="p-3 space-y-4">
         <div className="flex items-center justify-between px-2">
-          <h2 className="text-lg font-semibold tracking-tight">Projects</h2>
+          <h2 className="text-lg font-semibold tracking-tight">Threads</h2>
           {/* Optional: Add count badge? */}
           {/* <span className="text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded-sm">{projects.length}</span> */}
         </div>

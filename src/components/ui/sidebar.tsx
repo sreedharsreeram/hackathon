@@ -267,7 +267,7 @@ function SidebarTrigger({
       data-slot="sidebar-trigger"
       variant="ghost"
       size="icon"
-      className={cn("size-7", className)}
+      className={cn("size-10 hover:text-foreground", className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
@@ -275,7 +275,7 @@ function SidebarTrigger({
       {...props}
     >
       {
-        !open ? <ChevronsRight /> : <ChevronsLeft />
+        !open ? <ChevronsRight size={20} className="size-8 text-muted-foreground" /> : <ChevronsLeft size={20} className="size-8 text-muted-foreground" />
       }
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
