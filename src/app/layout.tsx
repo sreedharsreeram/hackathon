@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/Provider/provider";
+import { Analytics } from "@vercel/analytics/react"
 import { SidebarProvider } from "@/components/ui/sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -30,6 +31,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SidebarProvider>
+            <Analytics />
             {children}
             <Toaster />
           </SidebarProvider>
