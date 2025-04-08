@@ -26,10 +26,10 @@ type Project = {
 function ProjectListItem({ project }: { project: Project }) {
   return (
     // Use motion here IF you wrap the list in a client component later
-    <div className="flex flex-row items-center justify-between gap-2">
-      <Link
-        href={`/${project.id}`}
-        className="group text-muted-foreground hover:bg-accent hover:text-accent-foreground flex items-center gap-2 truncate rounded-md px-3 py-2 text-sm transition-colors duration-150 ease-in-out"
+    <div className='flex flex-row gap-2 justify-between items-center max-w-full w-full' >
+    <Link
+      href={`/${project.id}`}
+      className="group flex items-center w-3/5 gap-2 rounded-md px-3 py-2 text-sm transition-colors duration-150 ease-in-out text-muted-foreground hover:bg-accent hover:text-accent-foreground"
       >
         <CornerDownRight
           size={16}
@@ -79,7 +79,7 @@ export async function AppSidebar({
       {/* Content section with better padding/spacing */}
       <SidebarContent className="space-y-4 p-3" suppressHydrationWarning>
         <div className="flex items-center justify-between px-2">
-          <h2 className="text-lg font-semibold tracking-tight">Projects</h2>
+          <h2 className="text-lg font-semibold tracking-tight">Threads</h2>
           {/* Optional: Add count badge? */}
           {/* <span className="text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded-sm">{projects.length}</span> */}
         </div>

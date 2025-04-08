@@ -9,7 +9,7 @@ import {
   } from "@/components/ui/dropdown-menu"
 import { auth } from '@/server/auth'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
-import { ChevronsUpDown, Search } from 'lucide-react'
+import { Binoculars, ChevronsUpDown, Search } from 'lucide-react'
 import { SidebarMenuButton } from './ui/sidebar'
 import Link from 'next/link'
 import SignOutButton from './SignOutButton'
@@ -58,8 +58,14 @@ const UserAvatar = async(props: Props) => {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                    <Link href={'/find'} className='flex flex-row gap-3 cursor-pointer w-full'>
+                    <Link href={'/search'} className='flex flex-row gap-3 cursor-pointer w-full'>
                         <Search />
+                        Search
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Link href={'/find'} className='flex flex-row gap-3 cursor-pointer w-full'>
+                        <Binoculars />
                         Find
                     </Link>
                 </DropdownMenuItem>

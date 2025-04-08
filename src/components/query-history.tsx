@@ -20,7 +20,7 @@ interface QueryHistoryProps {
 const QueryHistory = ({ currentQuery, onQueryClick }: QueryHistoryProps) => {
   const [questions, setQuestions] = useState<string[]>([]);
   const router = useRouter();
-  const { collapsed } = useSidebar();
+  const isCollapsed = useSidebar();
 
   // Load questions from localStorage on component mount
   useEffect(() => {
@@ -89,7 +89,7 @@ const QueryHistory = ({ currentQuery, onQueryClick }: QueryHistoryProps) => {
     <SidebarGroup>
       <SidebarGroupLabel className="flex items-center gap-2">
         <HistoryIcon className="h-4 w-4" />
-        {!collapsed && <span>Search History</span>}
+        {!isCollapsed && <span>Search History</span>}
       </SidebarGroupLabel>
       <SidebarMenu>
         {questions.length > 0 ? (
@@ -100,11 +100,14 @@ const QueryHistory = ({ currentQuery, onQueryClick }: QueryHistoryProps) => {
                   onClick={() => handleQuestionClick(question)}
                   isActive={question === currentQuery}
                   className="pr-8 w-full"
-                  icon={<HistoryIcon className="h-4 w-4" />}
                 >
-                  {!collapsed && question}
+                  {/* Put the icon inside the button content instead of as a prop */}
+                  <div className="flex items-center gap-2">
+                    <HistoryIcon className="h-4 w-4" />
+                    {!isCollapsed && <span>{question}</span>}
+                  </div>
                 </SidebarMenuButton>
-                {!collapsed && (
+                {!isCollapsed && (
                   <button
                     onClick={(e) => deleteQuestion(question, e)}
                     className="absolute right-2 rounded-full p-1 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-red-100"
@@ -119,7 +122,7 @@ const QueryHistory = ({ currentQuery, onQueryClick }: QueryHistoryProps) => {
         ) : (
           <SidebarMenuItem>
             <div className="px-2 py-1 text-sm text-gray-500">
-              {!collapsed && "No previous questions"}
+              {!isCollapsed && "No previous questions"}
             </div>
           </SidebarMenuItem>
         )}

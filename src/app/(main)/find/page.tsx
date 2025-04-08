@@ -127,7 +127,7 @@ export default function FindResourcesPage() {
   };
 
   return (
-    <div className="bg-background text-foreground relative min-h-screen space-y-8 px-6 py-12 sm:px-12 lg:px-24">
+    <div className="relative min-h-screen text-foreground py-12 px-6 sm:px-12 lg:px-24 space-y-8">
       <motion.h1
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

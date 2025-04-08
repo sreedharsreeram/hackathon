@@ -285,7 +285,7 @@ export default function ResearchView() {
 
   return (
     // 1. Use Flex column layout and manage height
-    <div className="flex flex-col h-screen bg-background text-foreground max-h-screen">
+    <div className="flex flex-col h-screen  text-foreground max-h-screen">
        {/* Wrapper for scrollable content - constrained width and centered */}
        <div className="flex-grow overflow-y-auto px-4 md:px-6 py-8 md:py-12 max-w-4xl mx-auto w-full space-y-8 md:space-y-10">
          {/* Title Section */}

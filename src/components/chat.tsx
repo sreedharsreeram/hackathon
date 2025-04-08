@@ -129,7 +129,7 @@ export default function Chat() {
       </div>
 
       {/* Input bar pinned to bottom */}
-      <div className="border-t px-4 py-3 bg-background flex gap-2">
+      <div className="border-t px-4 py-3 flex gap-2">
         <Input
           placeholder="Type your message..."
           value={input}
